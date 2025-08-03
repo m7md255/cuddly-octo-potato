@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Who is the Richer?</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .main-menu {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        .menu-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 40px 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255,255,255,0.2);
+            min-width: 250px;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255,255,255,0.2);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .menu-card h2 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+
+        .menu-card p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .room-form {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            background: rgba(255,255,255,0.9);
+            color: #333;
+        }
+
+        .form-group input[type="checkbox"] {
+            width: auto;
+            margin-right: 10px;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        .back-btn {
+            background: rgba(255,255,255,0.2);
+            margin-right: 15px;
+        }
+
+        .questions-section {
+            margin-top: 30px;
+        }
+
+        .question-group {
+            background: rgba(255,255,255,0.05);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .question-inputs {
+            display: grid;
+            gap: 10px;
+        }
+
+        .question-inputs input {
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            background: rgba(255,255,255,0.9);
+            color: #333;
+        }
+
+        .room-code {
+            background: rgba(255,255,255,0.2);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .room-code h3 {
+            margin-bottom: 10px;
+        }
+
+        .code {
+            font-size: 2rem;
+            font-weight: bold;
+            letter-spacing: 3px;
+            background: rgba(255,255,255,0.3);
+            padding: 10px 20px;
+            border-radius: 8px;
+            display: inline-block;
+        }
+
+        .join-form {
+            text-align: center;
+        }
+
+        .mcq-question {
+            background: rgba(255,255,255,0.05);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .mcq-question h5 {
+            margin-bottom: 10px;
+            color: #ffd700;
+        }
+
+        .choices-grid {
+            display: grid;
+            gap: 8px;
+            margin: 10px 0;
+        }
+
+        .choice-input {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .choice-input input[type="text"] {
+            flex: 1;
+            padding: 8px;
+            border-radius: 4px;
+            border: none;
+            background: rgba(255,255,255,0.9);
+            color: #333;
+        }
+
+        .choice-input input[type="radio"] {
+            width: 20px;
+            height: 20px;
+        }
+
+        .join-input {
+            font-size: 1.5rem !important;
+            text-align: center;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💰 Who is the Richer? 💰</h1>
+            <p>Strategy Game - Collect Money, Buy Factories, Attack Rivals!</p>
+        </div>
+
+        <!-- Main Menu -->
+        <div id="main-menu" class="main-menu">
+            <div class="menu-card" onclick="showCreateRoom()">
+                <h2>🏗️ Create Room</h2>
+                <p>Set up a new game and invite friends</p>
+            </div>
+            <div class="menu-card" onclick="showJoinRoom()">
+                <h2>🚪 Join Room</h2>
+                <p>Enter a room code to join an existing game</p>
+            </div>
+        </div>
+
+        <!-- Create Room Form -->
+        <div id="create-room" class="hidden">
+            <div class="room-form">
+                <h2>Create New Room</h2>
+                
+                <div class="form-group">
+                    <label>Your Name:</label>
+                    <input type="text" id="creator-name" placeholder="Enter your name">
+                </div>
+
+                <div class="form-group">
+                    <label>Number of Rounds:</label>
+                    <input type="number" id="num-rounds" value="20" min="1" max="100">
+                </div>
+
+                <div class="form-group">
+                    <label>Starting Money (SAR):</label>
+                    <input type="number" id="starting-money" value="10000" min="0">
+                </div>
+
+                <div class="form-group">
+                    <label>Question Timer (seconds):</label>
+                    <input type="number" id="question-timer" value="30" min="10" max="120">
+                </div>
+
+                <div class="form-group">
+                    <label>Buying/Attack Timer (seconds):</label>
+                    <input type="number" id="buying-timer" value="45" min="15" max="180">
+                </div>
+
+                <div class="form-group">
+                    <label>Friendly-Fire Rounds (no missiles allowed):</label>
+                    <select id="friendly-fire-rounds">
+                        <option value="0">0 Rounds (missiles from start)</option>
+                        <option value="1">1 Round</option>
+                        <option value="2" selected>2 Rounds</option>
+                        <option value="3">3 Rounds</option>
+                        <option value="4">4 Rounds</option>
+                        <option value="5">5 Rounds</option>
+                    </select>
+                </div>
+
+                <div class="questions-section">
+                    <h3>📝 Create Multiple Choice Questions</h3>
+                    <p>Create 3 MCQ questions for each round (each worth 3000 SAR)</p>
+                    <div id="questions-container"></div>
+                </div>
+
+                <button class="btn back-btn" onclick="showMainMenu()">← Back</button>
+                <button class="btn" onclick="createRoom()">Create Room</button>
+            </div>
+        </div>
+
+        <!-- Join Room Form -->
+        <div id="join-room" class="hidden">
+            <div class="room-form join-form">
+                <h2>Join Room</h2>
+                
+                <div class="form-group">
+                    <label>Your Name:</label>
+                    <input type="text" id="joiner-name" placeholder="Enter your name">
+                </div>
+
+                <div class="form-group">
+                    <label>Room Code:</label>
+                    <input type="text" id="room-code" class="join-input" placeholder="XXXX" maxlength="4">
+                </div>
+
+                <button class="btn back-btn" onclick="showMainMenu()">← Back</button>
+                <button class="btn" onclick="joinRoom()">Join Room</button>
+            </div>
+        </div>
+
+        <!-- Room Created Success -->
+        <div id="room-created" class="hidden">
+            <div class="room-form">
+                <h2>🎉 Room Created Successfully!</h2>
+                
+                <div class="room-code">
+                    <h3>Share this code with your friends:</h3>
+                    <div class="code" id="generated-code">XXXX</div>
+                </div>
+
+                <div style="text-align: center;">
+                    <p>Waiting for players to join...</p>
+                    <p><strong>Players: <span id="player-count">1</span></strong></p>
+                    
+                    <div id="player-list" style="margin: 20px 0;">
+                        <!-- Players will be listed here -->
+                    </div>
+
+                    <button class="btn" onclick="startGame()" id="start-game-btn" disabled>Start Game</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Game State
+        let gameState = {
+            isHost: false,
+            roomCode: null,
+            players: [],
+            gameSettings: {},
+            questions: [],
+            currentRound: 0,
+            gameStarted: false
+        };
+
+        // Simulated multiplayer storage (replace with real server later)
+        let rooms = {};
+
+        function showMainMenu() {
+            document.getElementById('main-menu').classList.remove('hidden');
+            document.getElementById('create-room').classList.add('hidden');
+            document.getElementById('join-room').classList.add('hidden');
+            document.getElementById('room-created').classList.add('hidden');
+        }
+
+        function showCreateRoom() {
+            document.getElementById('main-menu').classList.add('hidden');
+            document.getElementById('create-room').classList.remove('hidden');
+            generateQuestionForms();
+        }
+
+        function showJoinRoom() {
+            document.getElementById('main-menu').classList.add('hidden');
+            document.getElementById('join-room').classList.remove('hidden');
+        }
+
+        function generateQuestionForms() {
+            const rounds = parseInt(document.getElementById('num-rounds').value);
+            const container = document.getElementById('questions-container');
+            container.innerHTML = '';
+
+            for (let round = 1; round <= rounds; round++) {
+                const roundDiv = document.createElement('div');
+                roundDiv.className = 'question-group';
+                
+                let questionsHTML = `<h4>Round ${round}</h4>`;
+                
+                for (let q = 1; q <= 3; q++) {
+                    questionsHTML += `
+                        <div class="mcq-question">
+                            <h5>Question ${q}</h5>
+                            <input type="text" placeholder="Enter your question..." data-round="${round}" data-q="${q}" data-type="question" style="width: 100%; margin-bottom: 10px; padding: 10px; border-radius: 5px; border: none; background: rgba(255,255,255,0.9); color: #333;">
+                            
+                            <div class="choices-grid">
+                                <div class="choice-input">
+                                    <input type="radio" name="correct_r${round}_q${q}" value="A" data-round="${round}" data-q="${q}">
+                                    <label style="color: #ffd700; font-weight: bold;">A:</label>
+                                    <input type="text" placeholder="Choice A" data-round="${round}" data-q="${q}" data-choice="A">
+                                </div>
+                                <div class="choice-input">
+                                    <input type="radio" name="correct_r${round}_q${q}" value="B" data-round="${round}" data-q="${q}">
+                                    <label style="color: #ffd700; font-weight: bold;">B:</label>
+                                    <input type="text" placeholder="Choice B" data-round="${round}" data-q="${q}" data-choice="B">
+                                </div>
+                                <div class="choice-input">
+                                    <input type="radio" name="correct_r${round}_q${q}" value="C" data-round="${round}" data-q="${q}">
+                                    <label style="color: #ffd700; font-weight: bold;">C:</label>
+                                    <input type="text" placeholder="Choice C" data-round="${round}" data-q="${q}" data-choice="C">
+                                </div>
+                            </div>
+                            <div class="correct-answer">☝️ Select the correct answer above</div>
+                        </div>
+                    `;
+                }
+                
+                roundDiv.innerHTML = questionsHTML;
+                container.appendChild(roundDiv);
+            }
+        }
+
+        // Update questions when rounds change
+        document.getElementById('num-rounds').addEventListener('change', generateQuestionForms);
+
+        function generateRoomCode() {
+            return Math.random().toString(36).substr(2, 4).toUpperCase();
+        }
+
+        function createRoom() {
+            const creatorName = document.getElementById('creator-name').value.trim();
+            
+            if (!creatorName) {
+                alert('Please enter your name');
+                return;
+            }
+
+            // Collect questions with MCQ format
+            const questions = [];
+            const rounds = parseInt(document.getElementById('num-rounds').value);
+
+            for (let round = 1; round <= rounds; round++) {
+                const roundQuestions = [];
+                
+                for (let q = 1; q <= 3; q++) {
+                    // Get question text
+                    const questionInput = document.querySelector(`input[data-round="${round}"][data-q="${q}"][data-type="question"]`);
+                    if (!questionInput.value.trim()) {
+                        alert(`Please fill in Question ${q} for Round ${round}`);
+                        return;
+                    }
+
+                    // Get choices
+                    const choiceA = document.querySelector(`input[data-round="${round}"][data-q="${q}"][data-choice="A"]`);
+                    const choiceB = document.querySelector(`input[data-round="${round}"][data-q="${q}"][data-choice="B"]`);
+                    const choiceC = document.querySelector(`input[data-round="${round}"][data-q="${q}"][data-choice="C"]`);
+                    
+                    if (!choiceA.value.trim() || !choiceB.value.trim() || !choiceC.value.trim()) {
+                        alert(`Please fill in all choices for Question ${q} in Round ${round}`);
+                        return;
+                    }
+
+                    // Get correct answer
+                    const correctAnswer = document.querySelector(`input[name="correct_r${round}_q${q}"]:checked`);
+                    if (!correctAnswer) {
+                        alert(`Please select the correct answer for Question ${q} in Round ${round}`);
+                        return;
+                    }
+
+                    roundQuestions.push({
+                        question: questionInput.value.trim(),
+                        choices: {
+                            A: choiceA.value.trim(),
+                            B: choiceB.value.trim(),
+                            C: choiceC.value.trim()
+                        },
+                        correctAnswer: correctAnswer.value
+                    });
+                }
+                questions.push(roundQuestions);
+            }
+
+            // Generate room
+            const roomCode = generateRoomCode();
+            const gameSettings = {
+                rounds: parseInt(document.getElementById('num-rounds').value),
+                startingMoney: parseInt(document.getElementById('starting-money').value),
+                questionTimer: parseInt(document.getElementById('question-timer').value),
+                buyingTimer: parseInt(document.getElementById('buying-timer').value),
+                friendlyFireRounds: parseInt(document.getElementById('friendly-fire-rounds').value),
+                creator: creatorName
+            };
+
+            // Store room data
+            rooms[roomCode] = {
+                settings: gameSettings,
+                questions: questions,
+                players: [{ name: creatorName, isHost: true }],
+                gameStarted: false
+            };
+
+            // Update game state
+            gameState.isHost = true;
+            gameState.roomCode = roomCode;
+            gameState.gameSettings = gameSettings;
+            gameState.questions = questions;
+            gameState.players = rooms[roomCode].players;
+
+            // Show room created screen
+            document.getElementById('create-room').classList.add('hidden');
+            document.getElementById('room-created').classList.remove('hidden');
+            document.getElementById('generated-code').textContent = roomCode;
+            updatePlayerList();
+        }
+
+        function joinRoom() {
+            const joinerName = document.getElementById('joiner-name').value.trim();
+            const roomCode = document.getElementById('room-code').value.trim().toUpperCase();
+
+            if (!joinerName || !roomCode) {
+                alert('Please enter your name and room code');
+                return;
+            }
+
+            if (!rooms[roomCode]) {
+                alert('Room not found. Please check the room code.');
+                return;
+            }
+
+            if (rooms[roomCode].gameStarted) {
+                alert('Game has already started. Cannot join.');
+                return;
+            }
+
+            if (rooms[roomCode].players.length >= 30) {
+                alert('Room is full (maximum 30 players)');
+                return;
+            }
+
+            // Check if name already exists
+            if (rooms[roomCode].players.some(p => p.name === joinerName)) {
+                alert('Name already taken in this room');
+                return;
+            }
+
+            // Add player to room
+            rooms[roomCode].players.push({ name: joinerName, isHost: false });
+
+            // Update game state
+            gameState.isHost = false;
+            gameState.roomCode = roomCode;
+            gameState.gameSettings = rooms[roomCode].settings;
+            gameState.questions = rooms[roomCode].questions;
+            gameState.players = rooms[roomCode].players;
+
+            // Show waiting screen
+            document.getElementById('join-room').classList.add('hidden');
+            document.getElementById('room-created').classList.remove('hidden');
+            document.getElementById('generated-code').textContent = roomCode;
+            updatePlayerList();
+        }
+
+        function updatePlayerList() {
+            const playerList = document.getElementById('player-list');
+            const playerCount = document.getElementById('player-count');
+            const startBtn = document.getElementById('start-game-btn');
+
+            playerCount.textContent = gameState.players.length;
+            
+            playerList.innerHTML = gameState.players.map(player => 
+                `<div style="padding: 5px; background: rgba(255,255,255,0.1); margin: 3px 0; border-radius: 5px;">
+                    ${player.name} ${player.isHost ? '(Host)' : ''}
+                </div>`
+            ).join('');
+
+            // Enable start button for host if enough players
+            if (gameState.isHost && gameState.players.length >= 2) {
+                startBtn.disabled = false;
+            }
+        }
+
+        function startGame() {
+            if (!gameState.isHost) return;
+            
+            if (gameState.players.length < 2) {
+                alert('Need at least 2 players to start');
+                return;
+            }
+
+            // Mark game as started
+            rooms[gameState.roomCode].gameStarted = true;
+            
+            // Initialize game state for all players
+            gameState.gameStarted = true;
+            
+            // TODO: Transition to game screen
+            alert('Game Starting! (Game interface coming next...)');
+        }
+
+        // Simulate real-time updates (replace with WebSocket later)
+        setInterval(() => {
+            if (gameState.roomCode && !gameState.isHost) {
+                // Simulate receiving updates from server
+                const room = rooms[gameState.roomCode];
+                if (room && room.players.length !== gameState.players.length) {
+                    gameState.players = room.players;
+                    updatePlayerList();
+                }
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
